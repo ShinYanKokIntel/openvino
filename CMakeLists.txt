@@ -55,6 +55,19 @@ project(OpenVINO
         HOMEPAGE_URL "https://docs.openvino.ai/2025/index.html"
         LANGUAGES C CXX)
 
+# /Zi flag is used for making debug info added to pdb files instead of the library itself
+# /DEBUG flag is used for adding PDB file to exe files, shared libraries, static libraries
+# /OPT:REF and /OPT:ICF are used for decreasing the size of PDB files
+# /INCREMENTAL:NO is used for disable incremental linking
+# /FS flag forces pdb file write to MSPDBSRV.exe
+# /Zf flag reduces the RPC call to MSPDBSRV.exe
+
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi /FS /Zf /ZH:SHA_256 /guard:cf /Qspectre")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /Zi /FS /Zf /ZH:SHA_256 /guard:cf /Qspectre")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF /INCREMENTAL:NO /CETCOMPAT /guard:cf")
+set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF /INCREMENTAL:NO /CETCOMPAT /guard:cf")
+set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF /INCREMENTAL:NO /CETCOMPAT /guard:cf")
+
 find_package(OpenVINODeveloperScripts REQUIRED
              PATHS "${OpenVINO_SOURCE_DIR}/cmake/developer_package"
              NO_CMAKE_FIND_ROOT_PATH
