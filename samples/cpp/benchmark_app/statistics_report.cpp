@@ -10,6 +10,12 @@
 #include <utility>
 #include <vector>
 
+#include <ie/ie_precision.hpp>
+#include <ie/ie_blob.h>
+#include <ie/ie_layouts.h>
+#include <ie/ie_common.h>
+#include <ie/ie_icnn_network.hpp>
+
 void StatisticsReport::addParameters(const Category& category, const Parameters& parameters) {
     if (_parameters.count(category) == 0)
         _parameters[category] = parameters;

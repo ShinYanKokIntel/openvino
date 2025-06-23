@@ -30,6 +30,12 @@ using std::setprecision;
 #include "slog.hpp"
 // clang-format on
 
+#include <ie/ie_precision.hpp>
+#include <ie/ie_blob.h>
+#include <ie/ie_layouts.h>
+#include <ie/ie_common.h>
+#include <ie/ie_icnn_network.hpp>
+
 // @brief performance counters sort
 static constexpr char pcSort[] = "sort";
 static constexpr char pcNoSort[] = "no_sort";
@@ -589,4 +595,18 @@ static UNUSED void printPerformanceCountsSort(std::vector<ov::ProfilingInfo> per
     stream << "Full device name: " << deviceName << std::endl;
     stream << std::endl;
     stream.flags(fmt);
+}
+
+static std::vector<std::pair<std::string, InferenceEngine::InferenceEngineProfileInfo>> perfCountersSorted(
+    std::map<std::string, InferenceEngine::InferenceEngineProfileInfo> perfMap) {
+    using perfItem = std::pair<std::string, InferenceEngine::InferenceEngineProfileInfo>;
+    std::vector<perfItem> sorted;
+    for (auto& kvp : perfMap)
+        sorted.push_back(kvp);
+
+    std::stable_sort(sorted.begin(), sorted.end(), [](const perfItem& l, const perfItem& r) {
+        return l.second.execution_index < r.second.execution_index;
+    });
+
+    return sorted;
 }

@@ -7,6 +7,11 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <ie/ie_precision.hpp>
+#include <ie/ie_blob.h>
+#include <ie/ie_layouts.h>
+#include <ie/ie_common.h>
+#include <ie/ie_icnn_network.hpp>
 
 namespace benchmark_app {
 struct InputInfo {
